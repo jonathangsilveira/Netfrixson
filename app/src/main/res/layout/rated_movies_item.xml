@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><!--<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/clickable_view_height">-->
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/textView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/default_horizontal_margin"
+    android:layout_marginTop="@dimen/default_vertical_margin"
+    android:layout_marginEnd="@dimen/default_horizontal_margin"
+    android:layout_marginBottom="@dimen/default_vertical_margin"
+    android:minHeight="@dimen/clickable_view_height"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+    android:background="?attr/selectableItemBackground"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+    <!--
+    </android.support.constraint.ConstraintLayout>-->
