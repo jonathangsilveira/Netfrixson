@@ -4,9 +4,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import br.edu.jgsilveira.portfolio.netfrixson.R
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.DiscoverMovies
+import kotlinx.android.synthetic.main.rated_movies_item.view.*
 
 class DiscoverMoviesAdapter(val onItemClickListener: (Int) -> Unit) :
         RecyclerView.Adapter<DiscoverMoviesAdapter.MovieViewHolder>() {
@@ -24,21 +24,15 @@ class DiscoverMoviesAdapter(val onItemClickListener: (Int) -> Unit) :
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         _data?.results?.let { list ->
             val item = list[position]
-            val view = holder.itemView as TextView
             holder.movieId = item.id
-            view.text = "${item.title}, ${item.releaseDate} - Vote average: ${item.voteAverage}"
+            holder.itemView.titleRatedMovies?.text = item.title
+            holder.itemView.averageRatedMovies?.text = "Vote average: ${item.voteAverage}"
         }
     }
 
     fun setData(data: DiscoverMovies?) {
         _data = data
         notifyDataSetChanged()
-    }
-
-    interface OnItemClickListener {
-
-        fun onItemClicked(movieId: Int)
-
     }
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

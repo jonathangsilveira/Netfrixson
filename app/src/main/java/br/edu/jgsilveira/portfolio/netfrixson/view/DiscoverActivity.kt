@@ -7,20 +7,14 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
-import android.widget.ProgressBar
 import br.edu.jgsilveira.portfolio.netfrixson.R
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.DiscoverMovies
-import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
 import br.edu.jgsilveira.portfolio.netfrixson.viewmodel.DiscoverViewModel
+import kotlinx.android.synthetic.main.activity_discover.*
 
 class DiscoverActivity : AppCompatActivity(), IActivityFragment {
-
-    private lateinit var list: RecyclerView
-
-    private lateinit var progressBar: ProgressBar
 
     private lateinit var viewModel: DiscoverViewModel
 
@@ -30,6 +24,7 @@ class DiscoverActivity : AppCompatActivity(), IActivityFragment {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_discover)
         viewModel = ViewModelProviders.of(this).get(DiscoverViewModel::class.java)
+        supportActionBar?.setTitle(R.string.discover)
         setupRecyclerView()
         bindData()
     }
@@ -37,6 +32,11 @@ class DiscoverActivity : AppCompatActivity(), IActivityFragment {
     override fun onResume() {
         super.onResume()
         attachObservers()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        detachObservers()
     }
 
     override fun setupActionBar(toolbar: Toolbar) {
@@ -85,24 +85,17 @@ class DiscoverActivity : AppCompatActivity(), IActivityFragment {
         moviesAdapter?.setData(discover)
     }
 
-    private fun onMovieResult(movie: Movie?) {
-        AlertDialog.Builder(this)
-                .setTitle(R.string.info).setMessage(movie?.toString())
-                .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
-                .show()
-    }
-
     private fun setupRecyclerView() {
         moviesAdapter = DiscoverMoviesAdapter { movieId -> onItemClicked(movieId) }
-        with(list) {
+        with(activity_discover_list) {
             layoutManager = LinearLayoutManager(this@DiscoverActivity, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(this@DiscoverActivity, DividerItemDecoration.VERTICAL))
             adapter = moviesAdapter
         }
     }
 
-    fun onItemClicked(movieId: Int) {
-
+    private fun onItemClicked(movieId: Int) {
+        //TODO Call another activity
     }
 
 }

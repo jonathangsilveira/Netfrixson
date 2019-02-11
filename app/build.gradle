@@ -25,6 +25,19 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        /*applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+                def appName = variant.mergedFlavor.resValues.get('app_name').getValue()
+                def SEP = "_"
+                def flavor = variant.getFlavorName()
+                //def buildType = variant.variantData.variantConfiguration.buildType.name
+                def version = variant.versionName
+
+                def newApkName = appName + SEP + flavor + SEP + version + ".apk"
+
+                outputFileName = new File(newApkName)
+            }
+        }*/
     }
     buildToolsVersion '28.0.3'
     compileOptions {
