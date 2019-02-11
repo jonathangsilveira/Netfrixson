@@ -2,13 +2,12 @@ package br.edu.jgsilveira.portfolio.netfrixson.view
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
@@ -69,11 +68,11 @@ class GuestSessionActivity : AppCompatActivity() {
         progressBar.visibility = if (processing == true) View.VISIBLE else View.GONE
     }
 
-    private fun onError(e: Throwable?) {
-        e?.let {
+    private fun onError(message: String?) {
+        message?.let {
             AlertDialog.Builder(this)
                     .setTitle(R.string.error)
-                    .setMessage(e.message)
+                    .setMessage(message)
                     .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
                     .show()
         }
@@ -94,7 +93,7 @@ class GuestSessionActivity : AppCompatActivity() {
     private fun attachObservers() {
         with(viewModel) {
             processing.observe(this@GuestSessionActivity, Observer<Boolean> { processing -> onProcessChanged(processing) })
-            error.observe(this@GuestSessionActivity, Observer<Throwable> { error -> onError(error) })
+            error.observe(this@GuestSessionActivity, Observer<String> { message -> onError(message) })
             result.observe(this@GuestSessionActivity, Observer<RatedMovies> { ratedMovies -> onResult(ratedMovies) })
         }
     }

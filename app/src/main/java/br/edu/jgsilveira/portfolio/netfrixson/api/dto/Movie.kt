@@ -2,49 +2,45 @@ package br.edu.jgsilveira.portfolio.netfrixson.api.dto
 
 import com.google.gson.annotations.SerializedName
 
-class Movie(
-        success: Boolean?,
-        statusCode: Int?,
-        statusMessage: String?,
-        val adult: Boolean?,
+data class Movie(
+        val adult: Boolean,
         @SerializedName("backdrop_path")
-        val backdropPath: String?,
+        val backdropPath: String,
         @SerializedName("belongs_to_collection")
         val belongsToCollection: Any?,
-        val budget: Int?,
-        val genres: List<Genre>?,
-        val homepage: String?,
-        val id: Int?,
+        val budget: Int,
+        val genres: List<Genre>,
+        val homepage: String,
+        val id: Int,
         @SerializedName("imdb_id")
-        val imdbId: String?,
+        val imdbId: String,
         @SerializedName("original_language")
-        val originalLanguage: String?,
+        val originalLanguage: String,
         @SerializedName("original_title")
-        val originalTitle: String?,
-        val overview: String?,
-        val popularity: Double?,
+        val originalTitle: String,
+        val overview: String,
+        val popularity: Double,
         @SerializedName("poster_path")
-        val posterPath: String?,
+        val posterPath: Any?,
         @SerializedName("production_companies")
-        val productionCompanies: List<ProductionCompany>?,
+        val productionCompanies: List<ProductionCompany>,
         @SerializedName("production_countries")
-        val productionCountries: List<ProductionCountry>?,
+        val productionCountries: List<ProductionCountry>,
         @SerializedName("release_date")
-        val releaseDate: String?,
-        val revenue: Int?,
-        val runtime: Int?,
+        val releaseDate: String,
+        val revenue: Int,
+        val runtime: Int,
         @SerializedName("spoken_languages")
-        val spokenLanguages: List<SpokenLanguage>?,
-        val status: String?,
-        val tagline: String?,
-        val title: String?,
-        val video: Boolean?,
+        val spokenLanguages: List<SpokenLanguage>,
+        val status: String,
+        val tagline: String,
+        val title: String,
+        val video: Boolean,
         @SerializedName("vote_average")
-        val voteAverage: Double?,
+        val voteAverage: Double,
         @SerializedName("vote_count")
-        val voteCount: Int?
-) : BaseResponse(success, statusCode, statusMessage) {
-
+        val voteCount: Int
+) {
     data class Genre(
             val id: Int,
             val name: String
@@ -70,5 +66,4 @@ class Movie(
             val iso6391: String,
             val name: String
     )
-
 }

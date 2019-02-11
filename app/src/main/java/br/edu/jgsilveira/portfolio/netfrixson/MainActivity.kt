@@ -5,7 +5,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,12 +14,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val queryButton = findViewById<Button>(R.id.button)
-        progressBarContainer = findViewById(R.id.progressContainer)
     }
 
     private fun onProcessChanged(processing: Boolean?) {
-        progressBarContainer.visibility = if (processing == true) View.VISIBLE else View.GONE
+        progressContainer.visibility = if (processing == true) View.VISIBLE else View.GONE
     }
 
     private fun onError(e: Throwable?) {

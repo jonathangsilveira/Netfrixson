@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.ProgressBar
 import br.edu.jgsilveira.portfolio.netfrixson.R
@@ -15,7 +16,7 @@ import br.edu.jgsilveira.portfolio.netfrixson.api.dto.DiscoverMovies
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
 import br.edu.jgsilveira.portfolio.netfrixson.viewmodel.DiscoverViewModel
 
-class DiscoverActivity : AppCompatActivity(), IActivity, DiscoverMoviesAdapter.OnItemClickListener {
+class DiscoverActivity : AppCompatActivity(), IActivityFragment {
 
     private lateinit var list: RecyclerView
 
@@ -29,7 +30,7 @@ class DiscoverActivity : AppCompatActivity(), IActivity, DiscoverMoviesAdapter.O
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_discover)
         viewModel = ViewModelProviders.of(this).get(DiscoverViewModel::class.java)
-        initReferences()
+        setupRecyclerView()
         bindData()
     }
 
@@ -38,20 +39,43 @@ class DiscoverActivity : AppCompatActivity(), IActivity, DiscoverMoviesAdapter.O
         attachObservers()
     }
 
-    override fun onPause() {
-        super.onPause()
-        detachObservers()
+    override fun setupActionBar(toolbar: Toolbar) {
+
+    }
+
+    override fun attachObservers() {
+        with(viewModel) {
+            processing.observe(this@DiscoverActivity, Observer<Boolean> { processing -> onProcessChanged(processing) })
+            error.observe(this@DiscoverActivity, Observer<String> { error -> onError(error) })
+            movies.observe(this@DiscoverActivity, Observer<DiscoverMovies> { discover -> onMoviesResult(discover) })
+        }
+    }
+
+    override fun detachObservers() {
+        with(viewModel) {
+            processing.removeObservers(this@DiscoverActivity)
+            error.removeObservers(this@DiscoverActivity)
+            movies.removeObservers(this@DiscoverActivity)
+        }
+    }
+
+    override fun bindData() {
+        viewModel.movies()
+    }
+
+    override fun attachListeners() {
+
     }
 
     private fun onProcessChanged(processing: Boolean?) {
         progressBar.visibility = if (processing == true) View.VISIBLE else View.GONE
     }
 
-    private fun onError(e: Throwable?) {
-        e?.let {
+    private fun onError(message: String?) {
+        message?.let {
             AlertDialog.Builder(this)
                     .setTitle(R.string.error)
-                    .setMessage(e.message)
+                    .setMessage(message)
                     .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
                     .show()
         }
@@ -69,7 +93,7 @@ class DiscoverActivity : AppCompatActivity(), IActivity, DiscoverMoviesAdapter.O
     }
 
     private fun setupRecyclerView() {
-        moviesAdapter = DiscoverMoviesAdapter().apply { setOnItemClickListener(this@DiscoverActivity) }
+        moviesAdapter = DiscoverMoviesAdapter { movieId -> onItemClicked(movieId) }
         with(list) {
             layoutManager = LinearLayoutManager(this@DiscoverActivity, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(this@DiscoverActivity, DividerItemDecoration.VERTICAL))
@@ -77,43 +101,8 @@ class DiscoverActivity : AppCompatActivity(), IActivity, DiscoverMoviesAdapter.O
         }
     }
 
-    override fun attachObservers() {
-        with(viewModel) {
-            processing.observe(this@DiscoverActivity, Observer<Boolean> { processing -> onProcessChanged(processing) })
-            error.observe(this@DiscoverActivity, Observer<Throwable> { error -> onError(error) })
-            movies.observe(this@DiscoverActivity, Observer<DiscoverMovies> { discover -> onMoviesResult(discover) })
-            movie.observe(this@DiscoverActivity, Observer<Movie> { movie -> onMovieResult(movie) })
-        }
-    }
+    fun onItemClicked(movieId: Int) {
 
-    override fun detachObservers() {
-        with(viewModel) {
-            processing.removeObservers(this@DiscoverActivity)
-            error.removeObservers(this@DiscoverActivity)
-            movies.removeObservers(this@DiscoverActivity)
-        }
-    }
-
-    override fun setupActionBar() {
-
-    }
-
-    override fun initReferences() {
-        list = findViewById(R.id.activity_discover_list)
-        progressBar = findViewById(R.id.progressBar)
-        setupRecyclerView()
-    }
-
-    override fun bindData() {
-        viewModel.movies()
-    }
-
-    override fun attachListeners() {
-
-    }
-
-    override fun onItemClicked(movieId: Int) {
-        viewModel.movie(movieId)
     }
 
 }

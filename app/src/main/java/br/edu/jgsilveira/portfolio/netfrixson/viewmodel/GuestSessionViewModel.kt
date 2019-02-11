@@ -1,42 +1,25 @@
 package br.edu.jgsilveira.portfolio.netfrixson.viewmodel
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import br.edu.jgsilveira.portfolio.netfrixson.api.client.GuestSessionClient
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.RatedMovies
 import br.edu.jgsilveira.portfolio.retrofitgithubsample.dto.GuestSession
-import kotlinx.coroutines.*
 
-class GuestSessionViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val job = Job()
-
-    private val uiScope = CoroutineScope(Dispatchers.Main + job)
-
-    private val _processing: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
-
-    private val _error: MutableLiveData<Throwable> by lazy { MutableLiveData<Throwable>() }
+class GuestSessionViewModel(application: Application) : AppViewModel(application) {
 
     private val _result: MutableLiveData<RatedMovies> by lazy { MutableLiveData<RatedMovies>() }
 
     private var guestSession: GuestSession? = null
 
-    val processing: LiveData<Boolean>
-        get() = _processing
-
-    val error: LiveData<Throwable>
-        get() = _error
-
     val result: LiveData<RatedMovies>
         get() = _result
 
     fun createGuestSession() {
-        uiScope.launch {
+        launchOnUIScope {
             _processing.value = true
-            kotlin.runCatching {
-                GuestSessionClient().newGuestSession()
+            /*kotlin.runCatching {
+                GuestSessionEndPoint().newGuestSession()
             }.onSuccess {
                 _processing.value = false
                 guestSession = it
@@ -44,22 +27,21 @@ class GuestSessionViewModel(application: Application) : AndroidViewModel(applica
             }.onFailure {
                 _processing.value = false
                 _error.value = it
-            }
-
+            }*/
         }
     }
 
     fun ratedMovies() {
-        uiScope.launch {
-            _processing.value = true
+        launchOnUIScope {
+            /*_processing.value = true
             kotlin.runCatching {
-                guestSession?.let { GuestSessionClient().ratedMovies(it) }
+                guestSession?.let { GuestSessionEndPoint().ratedMovies(it) }
             }.onSuccess { ratedMovies ->
                 _result.value = ratedMovies
             }.onFailure { exception ->
                 _error.value = exception
             }
-            _processing.value = false
+            _processing.value = false*/
         }
     }
 

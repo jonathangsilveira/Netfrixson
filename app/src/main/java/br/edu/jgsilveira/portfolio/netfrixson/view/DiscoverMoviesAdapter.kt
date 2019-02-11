@@ -8,11 +8,10 @@ import android.widget.TextView
 import br.edu.jgsilveira.portfolio.netfrixson.R
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.DiscoverMovies
 
-class DiscoverMoviesAdapter : RecyclerView.Adapter<DiscoverMoviesAdapter.MovieViewHolder>() {
+class DiscoverMoviesAdapter(val onItemClickListener: (Int) -> Unit) :
+        RecyclerView.Adapter<DiscoverMoviesAdapter.MovieViewHolder>() {
 
     private var _data: DiscoverMovies? = null
-
-    private var onItemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -36,10 +35,6 @@ class DiscoverMoviesAdapter : RecyclerView.Adapter<DiscoverMoviesAdapter.MovieVi
         notifyDataSetChanged()
     }
 
-    fun setOnItemClickListener(listener: OnItemClickListener?) {
-        onItemClickListener = listener
-    }
-
     interface OnItemClickListener {
 
         fun onItemClicked(movieId: Int)
@@ -51,7 +46,7 @@ class DiscoverMoviesAdapter : RecyclerView.Adapter<DiscoverMoviesAdapter.MovieVi
         var movieId: Int = 0
 
         init {
-            itemView.setOnClickListener { onItemClickListener?.onItemClicked(movieId) }
+            itemView.setOnClickListener { onItemClickListener(movieId) }
         }
 
     }
