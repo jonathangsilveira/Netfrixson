@@ -16,10 +16,8 @@ android {
     }
     buildTypes {
         def TMDB_URL = "TMDB_URL"
-        def API_KEY = "API_KEY"
         debug {
             buildConfigField "String", TMDB_URL, "\"https://api.themoviedb.org/3\""
-            buildConfigField "String", API_KEY, "\"b5608c7fcd15576edfe8564a93c3c451\""
         }
         release {
             minifyEnabled false
@@ -44,6 +42,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildTypes.each {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        def tmdbApiKey = properties.getProperty("tmdb_api_key", "")
+
+        it.buildConfigField 'String', "TMDB_API_KEY", tmdbApiKey
+
+        it.resValue 'string', "api_key", tmdbApiKey
+    }
 }
 
 dependencies {
@@ -65,4 +72,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0"
+    implementation ("com.squareup.picasso:picasso:2.71828"){
+        exclude group: "com.android.support"
+    }
 }

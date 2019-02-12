@@ -49,10 +49,11 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
                         //TODO Load image
                     }
                 }
-            }else
+            } else
                 _error.value = response.message()
             isProcessing = false
         }
+
     }
 
 }

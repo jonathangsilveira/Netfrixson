@@ -1,5 +1,7 @@
 package br.edu.jgsilveira.portfolio.netfrixson.api
 
+import br.edu.jgsilveira.portfolio.netfrixson.BuildConfig
+
 object Api {
 
     const val BASE_URL = "https://api.themoviedb.org/"
@@ -8,7 +10,7 @@ object Api {
 
     const val NEW_TOKEN = "/3/authentication/token/new"
 
-    const val KEY = "b5608c7fcd15576edfe8564a93c3c451"
+    const val KEY = BuildConfig.TMDB_API_KEY
 
     const val RATED_MOVIES = "/3/guest_session/{guest_session_id}/rated/movies"
 
