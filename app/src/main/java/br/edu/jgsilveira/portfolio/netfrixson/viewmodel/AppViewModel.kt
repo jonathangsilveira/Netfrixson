@@ -38,6 +38,12 @@ open class AppViewModel(application: Application) : AndroidViewModel(application
 
     protected val _error: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
+    protected var isProcessing: Boolean
+        get() = _processing.value ?: false
+        set(value) {
+            _processing.value = value
+        }
+
     val processing: LiveData<Boolean>
         get() = _processing
 

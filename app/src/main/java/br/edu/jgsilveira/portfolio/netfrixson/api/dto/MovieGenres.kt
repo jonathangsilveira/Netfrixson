@@ -1,8 +1,12 @@
 package br.edu.jgsilveira.portfolio.netfrixson.api.dto
 
-class MovieGenres(val genres: List<Genre>) {
+data class MovieGenres(val genres: List<Genre>) {
     data class Genre(
             val id: Int,
             val name: String
-    )
+    ) {
+        override fun toString(): String {
+            return name
+        }
+    }
 }
