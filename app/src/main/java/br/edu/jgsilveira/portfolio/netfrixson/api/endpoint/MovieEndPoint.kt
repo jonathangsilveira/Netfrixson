@@ -4,6 +4,7 @@ import br.edu.jgsilveira.portfolio.netfrixson.api.dto.BaseResponse
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Rate
 import br.edu.jgsilveira.portfolio.netfrixson.api.service.MovieService
+import kotlinx.coroutines.Deferred
 import retrofit2.Response
 
 class MovieEndPoint : BaseEndPoint() {
@@ -18,5 +19,8 @@ class MovieEndPoint : BaseEndPoint() {
 
     fun detail(id: Int): Response<Movie> =
             retrofit.create(MovieService::class.java).detail(movieId = id).execute()
+
+    fun detailAsync(id: Int): Deferred<Response<Movie>> =
+            async(retrofit.create(MovieService::class.java).detail(movieId = id))
 
 }

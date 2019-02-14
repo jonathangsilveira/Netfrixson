@@ -26,7 +26,8 @@ class DiscoverViewModel(application: Application) : AppViewModel(application) {
         launchOnUIScope {
             try {
                 _processing.value = true
-                printStatInfos()
+                Result
+                printStatsInfos()
                 val currentYear = Calendar.getInstance().apply { time = Date() }.get(Calendar.YEAR)
                 val response = withContext(Dispatchers.IO) {
                     endpoint.movies(mapOf("api_key" to Api.KEY,

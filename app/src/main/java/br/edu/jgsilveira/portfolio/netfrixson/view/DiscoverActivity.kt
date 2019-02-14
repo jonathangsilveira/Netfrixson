@@ -2,6 +2,7 @@ package br.edu.jgsilveira.portfolio.netfrixson.view
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -95,7 +96,9 @@ class DiscoverActivity : AppCompatActivity(), IActivityFragment {
     }
 
     private fun onItemClicked(movieId: Int) {
-        //TODO Call another activity
+        startActivity(Intent(this, MovieActivity::class.java).apply {
+            putExtra("movieId", movieId)
+        })
     }
 
 }

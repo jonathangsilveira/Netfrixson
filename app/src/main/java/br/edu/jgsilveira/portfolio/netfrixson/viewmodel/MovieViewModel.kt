@@ -4,12 +4,10 @@ import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.graphics.Bitmap
+import android.util.Log
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.MovieGenres
 import br.edu.jgsilveira.portfolio.netfrixson.api.endpoint.MovieEndPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MovieViewModel(application: Application) : AppViewModel(application) {
 
@@ -38,8 +36,25 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
 
     fun query(id: Int) {
         launchOnUIScope {
-            isProcessing = true
-            val response = withContext(Dispatchers.IO) {
+            try {
+                isProcessing = true
+                val deferred = movieEndPoint.detailAsync(id)
+                Log.d("Coroutine", "After async call")
+                val response = deferred.await()
+                if (response.isSuccessful) {
+                    response.body()?.let { movie ->
+                        _movie.value = movie
+                    }
+                } else
+                    _error.value = response.message()
+            } catch (e: Exception) {
+                val message = "Something went wrong with movie #$id: ${e.message}"
+                Log.wtf("MovieViewModel", message, e)
+                _error.value = message
+            } finally {
+                isProcessing = false
+            }
+            /*val response = withContext(Dispatchers.IO) {
                 movieEndPoint.detail(id)
             }
             if (response.isSuccessful) {
@@ -48,10 +63,10 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
                     launch(Dispatchers.IO) {
                         //TODO Load image
                     }
+                    async {  }
                 }
             } else
-                _error.value = response.message()
-            isProcessing = false
+                _error.value = response.message()*/
         }
 
     }

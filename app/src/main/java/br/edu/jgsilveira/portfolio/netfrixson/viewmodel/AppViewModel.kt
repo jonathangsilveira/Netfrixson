@@ -57,7 +57,7 @@ open class AppViewModel(application: Application) : AndroidViewModel(application
         uiScope.launch { block() }
     }
 
-    protected fun printStatInfos() {
+    protected fun printStatsInfos() {
         with(memoryInfo) {
             println("Avaliable memory: $availMem")
             println("Total memory: $totalMem")
