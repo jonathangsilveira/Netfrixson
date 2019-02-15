@@ -8,6 +8,8 @@ import android.util.Log
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.MovieGenres
 import br.edu.jgsilveira.portfolio.netfrixson.api.endpoint.MovieEndPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MovieViewModel(application: Application) : AppViewModel(application) {
 
@@ -38,9 +40,9 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
         launchOnUIScope {
             try {
                 isProcessing = true
-                val deferred = movieEndPoint.detailAsync(id)
-                Log.d("Coroutine", "After async call")
-                val response = deferred.await()
+                val response = withContext(Dispatchers.IO) {
+                    movieEndPoint.detail(id)
+                }
                 if (response.isSuccessful) {
                     response.body()?.let { movie ->
                         _movie.value = movie
@@ -54,19 +56,6 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
             } finally {
                 isProcessing = false
             }
-            /*val response = withContext(Dispatchers.IO) {
-                movieEndPoint.detail(id)
-            }
-            if (response.isSuccessful) {
-                response.body()?.let { movie ->
-                    _movie.value = movie
-                    launch(Dispatchers.IO) {
-                        //TODO Load image
-                    }
-                    async {  }
-                }
-            } else
-                _error.value = response.message()*/
         }
 
     }
