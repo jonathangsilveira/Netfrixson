@@ -3,9 +3,10 @@
     <!-- Base application theme. -->
     <style name="Netfrixson" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
-        <item name="colorAccent">@color/secondaryColor</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="android:textViewStyle">@style/Netfrixson.TextView</item>
     </style>
 
     <style name="Netfrixson.NoActionBar">
@@ -18,6 +19,15 @@
 
     <style name="Netfrixson.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Netfrixson.TextView" parent=""></style>
+    <style name="Netfrixson.TextView">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColorPrimary">@color/textColor</item>
+    </style>
+
+    <style name="Netfrixson.TextView.Label">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Caption</item>
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

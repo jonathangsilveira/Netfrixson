@@ -6,11 +6,35 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".view.MovieActivity">
-    <!-- tools:showIn="@layout/activity_movie" -->
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/movieOverview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelMovieOverview"
+            tools:text="@string/overview" />
+
+        <TextView
+            android:id="@+id/labelMovieOverview"
+            style="@style/Netfrixson.TextView.Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/overview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movieVoteAverage" />
 
         <TextView
             android:id="@+id/movieRuntime"
@@ -26,6 +50,7 @@
 
         <TextView
             android:id="@+id/labelRuntime"
+            style="@style/Netfrixson.TextView.Label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -50,6 +75,7 @@
 
         <TextView
             android:id="@+id/labelBudget"
+            style="@style/Netfrixson.TextView.Label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -74,6 +100,7 @@
 
         <TextView
             android:id="@+id/labelReleaseDate"
+            style="@style/Netfrixson.TextView.Label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -98,6 +125,7 @@
 
         <TextView
             android:id="@+id/labelPopularity"
+            style="@style/Netfrixson.TextView.Label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -107,6 +135,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/movieVoteAverage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            tools:text="@string/vote_average"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelVoteAverage" />
+
+        <TextView
+            android:id="@+id/labelVoteAverage"
+            style="@style/Netfrixson.TextView.Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/vote_average"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movieRuntime" />
 
     </android.support.constraint.ConstraintLayout>
 

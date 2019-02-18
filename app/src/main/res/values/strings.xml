@@ -2,7 +2,7 @@
     <string name="app_name">NetfreakShows</string>
     <string name="query">Query</string>
     <string name="error">Error</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="refresh">Refresh</string>
     <string name="info">Info</string>
     <string name="title_activity_movie">MovieActivity</string>
@@ -100,8 +100,8 @@
     <string name="overview">Overview</string>
     <string name="vote_average">Vote average</string>
     <string name="populatiry">Populatiry</string>
-    <string name="runtime">Runtime</string>
-    <string name="budget">Budget</string>
+    <string name="runtime" translatable="true">Runtime</string>
+    <string name="budget" translatable="true">Budget</string>
     <string name="release_date">Release date</string>
-    <string name="popularity">Popularity</string>
+    <string name="popularity" translatable="true">Popularity</string>
 </resources>

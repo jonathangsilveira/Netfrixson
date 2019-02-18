@@ -1,6 +1,7 @@
 package br.edu.jgsilveira.portfolio.netfrixson.api.dto
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class Movie(
         val adult: Boolean,
@@ -27,7 +28,7 @@ data class Movie(
         @SerializedName("production_countries")
         val productionCountries: List<ProductionCountry>,
         @SerializedName("release_date")
-        val releaseDate: String,
+        val releaseDate: Date,
         val revenue: Int,
         val runtime: Int,
         @SerializedName("spoken_languages")

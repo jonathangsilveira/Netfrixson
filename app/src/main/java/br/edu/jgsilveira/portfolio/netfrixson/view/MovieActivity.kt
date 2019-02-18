@@ -5,9 +5,13 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import br.com.pagueveloz.tefandroid.utils.format
+import br.com.pagueveloz.tefandroid.utils.formatDate
+import br.com.pagueveloz.tefandroid.utils.toCurrency
 import br.edu.jgsilveira.portfolio.netfrixson.R
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
 import br.edu.jgsilveira.portfolio.netfrixson.viewmodel.MovieViewModel
+import kotlinx.android.synthetic.main.content_movie.*
 
 class MovieActivity : AppCompatActivity() {
 
@@ -41,7 +45,16 @@ class MovieActivity : AppCompatActivity() {
     }
 
     private fun detailsObserver() = Observer<Movie> { movie ->
-        movie?.let { println(movie) }
+        movie?.let { update(movie) }
+    }
+
+    private fun update(movie: Movie) {
+        moviePopularity.text = movie.popularity.format()
+        movieBudget.text = movie.budget.toCurrency()
+        movieReleaseDate.text = movie.releaseDate.formatDate()
+        movieRuntime.text = movie.runtime.toString()
+        movieVoteAverage.text = movie.voteAverage.format()
+        movieOverview.text = movie.overview
     }
 
 }
