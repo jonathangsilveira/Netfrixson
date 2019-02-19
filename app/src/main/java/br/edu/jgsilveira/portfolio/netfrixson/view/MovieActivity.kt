@@ -11,6 +11,7 @@ import br.com.pagueveloz.tefandroid.utils.toCurrency
 import br.edu.jgsilveira.portfolio.netfrixson.R
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
 import br.edu.jgsilveira.portfolio.netfrixson.viewmodel.MovieViewModel
+import kotlinx.android.synthetic.main.activity_movie.*
 import kotlinx.android.synthetic.main.content_movie.*
 
 class MovieActivity : AppCompatActivity() {
@@ -22,6 +23,8 @@ class MovieActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel.processing.observe(this, processObserver())
         viewModel.error.observe(this, errorObserver())
         viewModel.movie.observe(this, detailsObserver())
@@ -49,6 +52,7 @@ class MovieActivity : AppCompatActivity() {
     }
 
     private fun update(movie: Movie) {
+        supportActionBar?.title = movie.title
         moviePopularity.text = movie.popularity.format()
         movieBudget.text = movie.budget.toCurrency()
         movieReleaseDate.text = movie.releaseDate.formatDate()
