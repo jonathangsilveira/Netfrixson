@@ -15,7 +15,9 @@
 
     </style>
 
-    <style name="Netfrixson.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Netfrixson.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
 
     <style name="Netfrixson.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

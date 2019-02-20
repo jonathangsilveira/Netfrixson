@@ -25,7 +25,10 @@ class MovieActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.apply {
+            title = ""
+            setDisplayHomeAsUpEnabled(true)
+        }
         viewModel.processing.observe(this, processObserver())
         viewModel.error.observe(this, errorObserver())
         viewModel.movie.observe(this, detailsObserver())
@@ -54,7 +57,7 @@ class MovieActivity : AppCompatActivity() {
     }
 
     private fun update(movie: Movie) {
-        supportActionBar?.title = movie.title
+        supportActionBar?.title = movie.originalTitle
         moviePopularity.text = movie.popularity.format()
         movieBudget.text = movie.budget.toCurrency()
         movieReleaseDate.text = movie.releaseDate.formatDate()

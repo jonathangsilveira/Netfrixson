@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.Log
-import br.edu.jgsilveira.portfolio.netfrixson.R
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.MovieGenres
 import br.edu.jgsilveira.portfolio.netfrixson.api.endpoint.MovieEndPoint
@@ -40,15 +39,18 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
         get() = _genres
 
     private fun loadBackdrop() {
-        _movie.value?.let { movie ->
-            configuration?.apply {
-                Picasso.get()
-                        .load("${images.baseUrl}w500${movie.backdropPath}")
-                        .placeholder(R.drawable.abc_ab_share_pack_mtrl_alpha)
-                        .error(R.drawable.abc_ab_share_pack_mtrl_alpha)
-                        .centerCrop()
-                        .into(BackdropTarget(_backdropImage, getApplication<Application>().resources))
+        try {
+            _movie.value?.let { movie ->
+                configuration?.apply {
+                    Picasso.get()
+                            .load("${images.secureBaseUrl}w500${movie.backdropPath}")
+                            //.placeholder(R.drawable.abc_ab_share_pack_mtrl_alpha)
+                            //.error(R.drawable.abc_ab_share_pack_mtrl_alpha)
+                            .into(BackdropTarget(_backdropImage, getApplication<Application>().resources))
+                }
             }
+        } catch (e: Exception) {
+            Log.wtf(TAG, "Could not load backdrop image D:", e)
         }
     }
 
@@ -64,8 +66,8 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
                     endPoint.detail(id)
                 }
                 if (response.isSuccessful) {
-                    response.body()?.let { movie ->
-                        _movie.value = movie
+                    response.body()?.apply {
+                        _movie.value = this
                         loadBackdrop()
                     }
                 } else
@@ -82,8 +84,8 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
     }
 
     inner class BackdropTarget(
-            val liveData: MutableLiveData<Drawable>,
-            val resources: Resources
+            private val liveData: MutableLiveData<Drawable>,
+            private val resources: Resources
     ) : Target {
 
         override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
@@ -95,8 +97,15 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
         }
 
         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+            Log.d(TAG, "Bitmap dimens: width ${bitmap?.width}/ height ${bitmap?.height}")
             liveData.value = BitmapDrawable(resources, bitmap)
         }
+
+    }
+
+    companion object {
+
+        private const val TAG = "MovieViewModel"
 
     }
 
