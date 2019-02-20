@@ -12,6 +12,7 @@ import br.edu.jgsilveira.portfolio.netfrixson.R
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.MovieGenres
 import br.edu.jgsilveira.portfolio.netfrixson.api.endpoint.MovieEndPoint
+import br.edu.jgsilveira.portfolio.netfrixson.common.RuntimeSettings.configuration
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.coroutines.Dispatchers
@@ -40,12 +41,14 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
 
     private fun loadBackdrop() {
         _movie.value?.let { movie ->
-            Picasso.get()
-                    .load(movie.backdropPath)
-                    .placeholder(R.drawable.abc_ab_share_pack_mtrl_alpha)
-                    .error(R.drawable.abc_ab_share_pack_mtrl_alpha)
-                    .centerCrop()
-                    .into(BackdropTarget(_backdropImage, getApplication<Application>().resources))
+            configuration?.apply {
+                Picasso.get()
+                        .load("${images.baseUrl}w500${movie.backdropPath}")
+                        .placeholder(R.drawable.abc_ab_share_pack_mtrl_alpha)
+                        .error(R.drawable.abc_ab_share_pack_mtrl_alpha)
+                        .centerCrop()
+                        .into(BackdropTarget(_backdropImage, getApplication<Application>().resources))
+            }
         }
     }
 

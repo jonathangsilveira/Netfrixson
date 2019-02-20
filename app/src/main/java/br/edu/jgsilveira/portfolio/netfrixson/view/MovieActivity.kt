@@ -2,6 +2,7 @@ package br.edu.jgsilveira.portfolio.netfrixson.view
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -28,6 +29,7 @@ class MovieActivity : AppCompatActivity() {
         viewModel.processing.observe(this, processObserver())
         viewModel.error.observe(this, errorObserver())
         viewModel.movie.observe(this, detailsObserver())
+        viewModel.backdropImage.observe(this, backdropImageObserver())
         val movieId = intent?.getIntExtra("movieId", 0)
         movieId?.let { viewModel.query(movieId) }
     }
@@ -59,6 +61,10 @@ class MovieActivity : AppCompatActivity() {
         movieRuntime.text = movie.runtime.toString()
         movieVoteAverage.text = movie.voteAverage.format()
         movieOverview.text = movie.overview
+    }
+
+    private fun backdropImageObserver() = Observer<Drawable> { image ->
+        backdropImage.setImageDrawable(image)
     }
 
 }

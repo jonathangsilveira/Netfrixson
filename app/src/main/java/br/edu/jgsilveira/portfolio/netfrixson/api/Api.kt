@@ -24,4 +24,6 @@ object Api {
 
     const val MOVIE_DETAIL = "/3/movie/{movie_id}"
 
+    const val CONFIGURATION = "/3/configuration"
+
 }
