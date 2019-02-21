@@ -76,7 +76,7 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
                 Log.wtf("MovieViewModel", message, e)
                 _error.value = message
             } finally {
-                isProcessing = false
+                _processing.value = false
             }
         }
 

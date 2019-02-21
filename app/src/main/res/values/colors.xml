@@ -9,4 +9,5 @@
     <color name="colorPrimaryText">#ffffff</color>
     <color name="colorSecondaryText">#ffffff</color>
     <color name="textColor">#000000</color>
+    <color name="colorProgressBackground">#33000000</color>
 </resources>
