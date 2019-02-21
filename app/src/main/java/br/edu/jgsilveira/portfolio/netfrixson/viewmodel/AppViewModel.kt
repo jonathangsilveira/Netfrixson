@@ -11,6 +11,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 open class AppViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -55,6 +57,16 @@ open class AppViewModel(application: Application) : AndroidViewModel(application
 
     protected fun launchOnUIScope(block: suspend CoroutineScope.() -> Unit) {
         uiScope.launch { block() }
+    }
+
+    protected fun <T> Response<T>.onSuccess(action: (value: T?) -> Unit): Response<T> {
+        if (isSuccessful) action(body())
+        return this
+    }
+
+    protected fun <T> Response<T>.onFailure(action: (code: Int, message: String, value: ResponseBody?) -> Unit): Response<T> {
+        if (!isSuccessful) action(code(), message(), errorBody())
+        return this
     }
 
     protected fun printStatsInfos() {

@@ -49,6 +49,7 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
                             .into(BackdropTarget(_backdropImage, getApplication<Application>().resources))
                 }
             }
+            kotlin.runCatching {  }
         } catch (e: Exception) {
             Log.wtf(TAG, "Could not load backdrop image D:", e)
         }
@@ -62,16 +63,14 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
         launchOnUIScope {
             try {
                 isProcessing = true
-                val response = withContext(Dispatchers.IO) {
+                withContext(Dispatchers.IO) {
                     endPoint.detail(id)
+                }.onSuccess { dto ->
+                    _movie.value = dto
+                    loadBackdrop()
+                }.onFailure { _, message, _ ->
+                    _error.value = message
                 }
-                if (response.isSuccessful) {
-                    response.body()?.apply {
-                        _movie.value = this
-                        loadBackdrop()
-                    }
-                } else
-                    _error.value = response.message()
             } catch (e: Exception) {
                 val message = "Something went wrong with movie #$id: ${e.message}"
                 Log.wtf("MovieViewModel", message, e)
