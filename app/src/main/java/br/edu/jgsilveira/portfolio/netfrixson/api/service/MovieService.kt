@@ -18,7 +18,7 @@ interface MovieService {
 
     @GET(value = Api.MOVIE_GENRES)
     fun genres(@Query(value = "api_key") apiKey: String = Api.KEY,
-               @Query(value = "language") language: String): Call<MovieGenres>
+               @Query(value = "language") language: String = "en-US"): Call<MovieGenres>
 
     @GET(value = Api.MOVIE_DETAIL)
     fun detail(@Path(value = "movie_id") movieId: Int,

@@ -5,8 +5,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.view.View
 import br.edu.jgsilveira.portfolio.netfrixson.R
 import br.edu.jgsilveira.portfolio.netfrixson.viewmodel.MovieViewModel
+import kotlinx.android.synthetic.main.activity_movie.*
 
 class MovieActivity : AppCompatActivity() {
 
@@ -18,7 +20,6 @@ class MovieActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
         viewModel.processing.observe(this, processObserver())
-        init()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -29,33 +30,8 @@ class MovieActivity : AppCompatActivity() {
             super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        supportFragmentManager?.findFragmentById(R.id.contentMovie)?.apply {
-            when (tag) {
-                MovieFragment.TAG -> moveTaskToBack(true)
-                LoadingFragment.TAG -> {  }
-                else -> { super.onBackPressed() }
-            }
-        }
-    }
-
-    private fun init() {
-        val movieId = intent?.getIntExtra("movieId", 0)
-        supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.contentMovie, MovieFragment.newInstance(movieId))
-                ?.addToBackStack(null)
-                ?.commit()
-    }
-
     private fun processObserver() = Observer<Boolean> { processing ->
-        if (processing == true)
-            supportFragmentManager
-                    ?.beginTransaction()
-                    ?.add(R.id.contentMovie, LoadingFragment())
-                    ?.addToBackStack(MovieFragment.TAG)
-                    ?.commit()
-        else
-            supportFragmentManager?.popBackStack()
+        movieLoading.visibility = if (processing == true) View.VISIBLE else View.GONE
     }
 
 }

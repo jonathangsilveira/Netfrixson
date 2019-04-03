@@ -2,25 +2,36 @@ package br.edu.jgsilveira.portfolio.netfrixson.api.endpoint
 
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.BaseResponse
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
+import br.edu.jgsilveira.portfolio.netfrixson.api.dto.MovieGenres
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Rate
 import br.edu.jgsilveira.portfolio.netfrixson.api.service.MovieService
-import kotlinx.coroutines.Deferred
-import retrofit2.Response
+import br.edu.jgsilveira.portfolio.netfrixson.common.Result
 
 class MovieEndPoint : BaseEndPoint() {
 
-    fun rate(id: Int, value: Double, guestSessionId: String, sessionId: String): Response<BaseResponse> {
-        return retrofit.create(MovieService::class.java).rate(
+    private val service: MovieService by lazy {
+        retrofit.service<MovieService>()
+    }
+
+    fun rate(
+            id: Int,
+            value: Double,
+            guestSessionId: String,
+            sessionId: String
+    ): Result<BaseResponse> = safeApiCall {
+        service.rate(
                 movieId = id.toString(),
                 rate = Rate(value),
                 queries = mapOf("guest_session_id" to guestSessionId, "session_id" to sessionId)
-        ).execute()
+        )
     }
 
-    fun detail(id: Int): Response<Movie> =
-            retrofit.create(MovieService::class.java).detail(movieId = id).execute()
+    fun detail(id: Int): Result<Movie> = safeApiCall {
+        service.detail(movieId = id)
+    }
 
-    fun detailAsync(id: Int): Deferred<Response<Movie>> =
-            async(retrofit.create(MovieService::class.java).detail(movieId = id))
+    fun genres(): Result<MovieGenres> = safeApiCall {
+        service.genres()
+    }
 
 }

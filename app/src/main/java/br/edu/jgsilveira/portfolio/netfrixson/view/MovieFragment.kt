@@ -13,11 +13,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import br.com.pagueveloz.tefandroid.utils.format
-import br.com.pagueveloz.tefandroid.utils.formatDate
-import br.com.pagueveloz.tefandroid.utils.toCurrency
 import br.edu.jgsilveira.portfolio.netfrixson.R
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
+import br.edu.jgsilveira.portfolio.netfrixson.ext.format
+import br.edu.jgsilveira.portfolio.netfrixson.ext.formatDate
+import br.edu.jgsilveira.portfolio.netfrixson.ext.toCurrency
 import br.edu.jgsilveira.portfolio.netfrixson.viewmodel.MovieViewModel
 import kotlinx.android.synthetic.main.content_movie.*
 import kotlinx.android.synthetic.main.fragment_movie.*

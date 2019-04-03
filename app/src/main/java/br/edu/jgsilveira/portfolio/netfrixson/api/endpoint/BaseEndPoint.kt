@@ -1,11 +1,8 @@
 package br.edu.jgsilveira.portfolio.netfrixson.api.endpoint
 
 import br.edu.jgsilveira.portfolio.netfrixson.api.Api
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
+import br.edu.jgsilveira.portfolio.netfrixson.common.Result
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -18,22 +15,18 @@ open class BaseEndPoint {
                 .build()
     }
 
-    protected fun <T> async(call: Call<T>): Deferred<Response<T>> {
-        val deferred = CompletableDeferred<Response<T>>()
-        deferred.invokeOnCompletion {
-            if (deferred.isCancelled)
-                call.cancel()
-        }
-        call.enqueue(object: Callback<T> {
-            override fun onFailure(call: Call<T>, t: Throwable) {
-                deferred.completeExceptionally(t)
-            }
+    protected inline fun <reified T> Retrofit.service() = create(T::class.java)
 
-            override fun onResponse(call: Call<T>, response: Response<T>) {
-                deferred.complete(response)
-            }
-        })
-        return deferred
+    protected fun <T> safeApiCall(call: () -> Call<T>): Result<T> {
+        return try {
+            val response = call().execute()
+            if (response.isSuccessful)
+                Result.Success(response.body())
+            else
+                Result.Failure.Response(response.code(), response.message())
+        } catch (e: Exception) {
+            Result.Failure.Undefined(e)
+        }
     }
 
 }

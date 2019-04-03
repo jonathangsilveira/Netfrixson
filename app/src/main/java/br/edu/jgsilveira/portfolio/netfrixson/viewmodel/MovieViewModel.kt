@@ -11,11 +11,14 @@ import android.util.Log
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.Movie
 import br.edu.jgsilveira.portfolio.netfrixson.api.dto.MovieGenres
 import br.edu.jgsilveira.portfolio.netfrixson.api.endpoint.MovieEndPoint
+import br.edu.jgsilveira.portfolio.netfrixson.common.Result
 import br.edu.jgsilveira.portfolio.netfrixson.common.RuntimeSettings.configuration
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.async
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class MovieViewModel(application: Application) : AppViewModel(application) {
 
@@ -61,7 +64,16 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
 
     fun query(id: Int) {
         launchOnUIScope {
-            try {
+            Log.d("query", "Before call detail method")
+            detail(id)
+            val deferred = async(Dispatchers.IO) {
+                Log.d("async", "Before async call detail")
+                endPoint.detail(id)
+            }
+            Log.d("query", "After call detail method")
+            deferred.await()
+            Log.d("query", "After async call detail")
+            /*try {
                 isProcessing = true
                 withContext(Dispatchers.IO) {
                     endPoint.detail(id)
@@ -71,15 +83,25 @@ class MovieViewModel(application: Application) : AppViewModel(application) {
                 }.onFailure { _, message, _ ->
                     _error.value = message
                 }
+                withContext(Dispatchers.IO) {
+                    endPoint.genres()
+                }.onSuccess { movieGenres ->
+                    _genres.value = movieGenres
+                }
             } catch (e: Exception) {
                 val message = "Something went wrong with movie #$id: ${e.message}"
                 Log.wtf("MovieViewModel", message, e)
                 _error.value = message
             } finally {
-                _processing.value = false
-            }
+                isProcessing = false
+            }*/
         }
+    }
 
+    private suspend fun detail(id: Int) = suspendCoroutine<Result<Movie>> { continuation ->
+        Log.d("detail", "Before call endpoint method")
+        continuation.resume(endPoint.detail(id))
+        Log.d("detail", "After call endpoint method")
     }
 
     inner class BackdropTarget(
